@@ -1,0 +1,355 @@
+/* ==== PENGATURAN DASAR (TEMA MAGIC UI) ==== */
+:root {
+    /* Palet Warna Magic UI (Putih/Ungu) */
+    --primary-color: #9333ea;   /* Ungu */
+    --primary-color-rgb: 147, 51, 234;
+    --bg-color: #000000;        /* Hitam Pekat */
+    --surface-color: #111111;   /* Abu-abu Sangat Gelap */
+    --text-color: #f9fafb;      /* Putih (Off-white) */
+    --text-muted: #a1a1aa;      /* Abu-abu (Teks Muted) */
+    
+    --font-body: 'Inter', sans-serif;
+
+    /* Variabel untuk Hero Spotlight */
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    overflow-x: hidden; /* Mencegah horizontal scroll */
+}
+
+/* ==== "WOW" 1: LATAR BELAKANG AURORA ==== */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+    
+    /* Gradien aurora yang sangat halus */
+    background: radial-gradient(
+        circle at 20% 30%,
+        rgba(var(--primary-color-rgb), 0.15) 0%,
+        transparent 30%
+    ),
+    radial-gradient(
+        circle at 80% 70%,
+        rgba(var(--primary-color-rgb), 0.15) 0%,
+        transparent 30%
+    );
+    
+    /* Animasi "bernapas" */
+    animation: auroraBreathe 8s ease-in-out infinite;
+}
+
+@keyframes auroraBreathe {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.15;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.25;
+    }
+}
+
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative; /* Pastikan di atas background */
+    z-index: 2;
+}
+
+a {
+    text-decoration: none;
+    color: var(--text-color);
+    transition: color 0.3s ease;
+}
+
+/* ==== 1. NAVIGASI ==== */
+.navbar {
+    padding: 1.5rem 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+    background-color: transparent; 
+    transition: background-color 0.4s ease, backdrop-filter 0.4s ease;
+    
+    animation: slideDown 1s ease-out 0.5s;
+    animation-fill-mode: backwards; 
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.navbar.scrolled {
+    /* Glassmorphism yang sangat halus */
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--surface-color);
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar .logo {
+    font-size: 1.5rem; /* Lebih kecil, lebih bersih */
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.navbar .nav-links {
+    display: flex;
+    list-style: none;
+}
+
+/* ==== "WOW" 2: NAVBAR HOVER "MAGIC PILL" ==== */
+.navbar .nav-links a {
+    color: var(--text-muted);
+    font-weight: 500; /* Sedikit lebih tipis */
+    font-size: 0.9rem;
+    position: relative; 
+    padding: 0.5rem 1rem; 
+    border-radius: 999px; /* Bentuk pil */
+    z-index: 1; 
+    transition: color 0.3s ease;
+}
+
+/* Ini adalah "Pill" nya */
+.navbar .nav-links a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.05); /* Latar belakang pil */
+    border-radius: 999px;
+    
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.3s ease;
+    z-index: -1; 
+}
+
+.navbar .nav-links a:hover {
+    color: var(--text-color); /* Teks jadi putih cerah */
+}
+
+.navbar .nav-links a:hover::before {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ==== 2. HERO (BAGIAN UTAMA) ==== */
+.hero {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 1rem;
+    position: relative;
+    overflow: hidden; /* Penting untuk spotlight */
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+/* ==== "WOW" 3: HERO SPOTLIGHT ==== */
+.hero-spotlight {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Tidak bisa diklik */
+    
+    /* Spotlight mengikuti variabel --mouse-x/y */
+    background: radial-gradient(
+        circle 300px at var(--mouse-x) var(--mouse-y),
+        rgba(255, 255, 255, 0.08) 0%, /* Cahaya putih halus */
+        transparent 80%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Saat mouse di atas hero, tampilkan spotlight */
+.hero:hover .hero-spotlight {
+    opacity: 1;
+}
+
+.hero-title {
+    font-size: 4.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-color); /* Teks putih bersih */
+    letter-spacing: -0.02em; /* Kerning lebih rapat */
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    min-height: 2.2rem;
+}
+
+.typing-effect {
+    color: var(--primary-color); /* Teks ketik jadi ungu */
+    font-weight: 600;
+    position: relative;
+}
+
+.typing-effect::after {
+    content: '|';
+    position: absolute;
+    right: -10px;
+    animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* ==== "WOW" 4: TOMBOL "SHIMMER" ==== */
+.btn {
+    font-weight: 600;
+    font-size: 1rem;
+    background: var(--primary-color);
+    color: #fff;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 8px; /* Sudut lebih rounded */
+    cursor: pointer;
+    position: relative; /* Penting untuk shimmer */
+    overflow: hidden; /* Sembunyikan shimmer */
+    
+    /* Shadow ungu yang halus */
+    box-shadow: 0 4px 14px rgba(var(--primary-color-rgb), 0.25);
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(var(--primary-color-rgb), 0.4);
+}
+
+/* Ini adalah elemen Shimmer-nya */
+.btn-shimmer {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(255, 255, 255, 0.3) 50%, /* Kilau putih */
+        transparent 100%
+    );
+    transform: rotate(25deg);
+    
+    /* Sembunyikan dan posisikan di luar */
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+
+.btn:hover .btn-shimmer {
+    opacity: 1;
+    /* Animasikan gerakannya */
+    animation: shimmer 1.5s ease-out;
+}
+
+@keyframes shimmer {
+    from {
+        transform: translate(-100%, -100%) rotate(25deg);
+    }
+    to {
+        transform: translate(100%, 100%) rotate(25deg);
+    }
+}
+
+
+/* ==== 3. FOOTER ==== */
+.footer {
+    text-align: center;
+    padding: 2rem 0;
+    background: transparent; /* Transparan */
+    border-top: 1px solid var(--surface-color); /* Garis batas tipis */
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    position: relative;
+    z-index: 2;
+}
+
+.animate-fade-in {
+    animation: fadeIn 1.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ==== RESPONSIVE (untuk HP) ==== */
+@media (max-width: 768px) {
+    .navbar .nav-links {
+        display: none;
+    }
+
+    .hero-title {
+        font-size: 2.8rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+    
+    /* Matikan spotlight di HP */
+    .hero-spotlight {
+        display: none;
+    }
+}
